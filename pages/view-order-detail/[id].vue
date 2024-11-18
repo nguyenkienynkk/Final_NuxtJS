@@ -33,7 +33,7 @@
                     <p class="font-normal text-lg leading-8 text-gray-500 mb-3">@_@</p>
                     <div class="flex items-center">
                       <p class="font-medium text-base leading-7 text-black pr-4 mr-4 border-r border-gray-200">Price:
-                        <span class="text-gray-500"> {{ item.price }}$</span></p>
+                        <span class="text-gray-500"> ${{ item.price }}</span></p>
                       <p class="font-medium text-base leading-7 text-black">Quantity: <span
                           class="text-gray-500">{{ item.quantity }}</span></p>
                     </div>
@@ -43,7 +43,7 @@
                   <div class="col-span-5 lg:col-span-1 flex items-center max-lg:mt-3">
                     <div class="flex gap-3 lg:block">
                       <p class="font-medium text-sm leading-7 text-black">Price</p>
-                      <p class="lg:mt-4 font-medium text-sm leading-7 text-indigo-600">{{ item.total }}$</p>
+                      <p class="lg:mt-4 font-medium text-sm leading-7 text-indigo-600">${{ item.total }}</p>
                     </div>
                   </div>
                   <div class="col-span-5 lg:col-span-2 flex items-center max-lg:mt-3">
@@ -81,7 +81,7 @@
                 class="text-gray-500">ending with 8822</span></p>
           </div>
           <p class="font-semibold text-lg text-black py-6">Total Price: <span
-              class="text-indigo-600">{{ totalPrice }}$</span></p>
+              class="text-indigo-600">${{ totalPrice }}</span></p>
         </div>
 
       </div>
@@ -90,6 +90,7 @@
 </template>
 
 <script setup>
+const toast = useToast();
 const router = useRouter()
 const totalPrice = computed(() => {
   if (Array.isArray(selectedOrder.value)) {
@@ -98,7 +99,7 @@ const totalPrice = computed(() => {
   return 0;
 });
 const trackOrder = () => {
-  alert('Tracking your order...');
+  toast.success('Tracking your order...');
 };
 
 const cancelOrder = () => {
@@ -107,6 +108,7 @@ const cancelOrder = () => {
 import {onMounted, ref} from 'vue';
 import {useRoute} from 'vue-router';
 import methodService from '~/plugins/methodService';
+import {useToast} from "vue-toastification";
 
 const selectedOrder = ref(null);
 const route = useRoute();

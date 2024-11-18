@@ -15,10 +15,12 @@
                   <span class="text-gray-800 dark:text-white">{{ user.name }}</span>
                 </div>
                 <div class="flex items-center cursor-pointer">
-                  <a href="/cart"><img :src="cart" alt="Cart" class="w-8 h-8 rounded-full mr-2"/></a>
+                  <div @click="navigateTo('/cart')"><img :src="cart" alt="Cart" class="w-8 h-8 rounded-full mr-2"/>
+                  </div>
                 </div>
                 <div class="flex items-center cursor-pointer">
-                  <a href="/order-detail"><img :src="order" alt="Order" class="w-8 h-8 rounded-full mr-2"/></a>
+                  <div @click="navigateTo('/order-detail')"><img :src="order" alt="Order"
+                                                                 class="w-8 h-8 rounded-full mr-2"/></div>
                 </div>
                 <div v-if="isDropdownOpen"
                      class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md">
@@ -27,17 +29,25 @@
                         class="px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer">
                       Logout
                     </li>
+                    <li @click="navigateTo('/profile')"
+                        class="px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 cursor-pointer">
+                      Profile
+                    </li>
                   </ul>
                 </div>
               </div>
             </div>
             <div v-else>
-              <a href="/login"
-                 class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">Log
-                in</a>
-              <a href="/signup"
-                 class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">Sign
-                up</a>
+              <div @click="navigateTo('/login')"
+                   class="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
+                Log
+                in
+              </div>
+              <div @click="navigateTo('/signup')"
+                   class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800">
+                Sign
+                up
+              </div>
             </div>
 
             <button data-collapse-toggle="mobile-menu-2" type="button"
@@ -93,7 +103,7 @@
         <div v-if="!isLoggedIn" class="text-center">
           <img
               src="https://www.elegantthemes.com/blog/wp-content/uploads/2019/12/401-error-wordpress-featured-image.jpg"
-              width="600" height="400" alt="Login Required"
+              width="800" height="600" alt="Login Required"
               class="mx-auto mb-6 rounded-lg shadow-lg">
           <p class="text-lg text-gray-600 dark:text-gray-300">
             You need to log in to view our products and add them to your cart.
@@ -112,36 +122,37 @@
               :class="{ 'slide-in': isFormVisible }"
           >
             <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-6 text-center">Search Products</h2>
-            <!-- Form Search -->
             <form @submit.prevent="searchProducts">
               <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <!-- Product Name Input -->
                 <div class="col-span-1">
-                  <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Product Name</label>
+                  <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Product
+                    Name</label>
                   <input v-model="searchQuery.name" id="name" type="text" placeholder="Enter product name"
                          class="w-full py-3 px-4 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600
                       focus:ring-2 focus:ring-fuchsia-500 focus:outline-none transition-all duration-300">
                 </div>
 
-                <!-- Min Price Input -->
                 <div class="col-span-1">
-                  <label for="min-price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Min Price</label>
-                  <input v-model.number="searchQuery.min_price" id="min-price" type="number" min="0" placeholder="Min price"
+                  <label for="min-price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Min
+                    Price</label>
+                  <input v-model.number="searchQuery.min_price" id="min-price" type="number" min="0"
+                         placeholder="Min price"
                          class="w-full py-3 px-4 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600
                       focus:ring-2 focus:ring-fuchsia-500 focus:outline-none transition-all duration-300">
                 </div>
 
-                <!-- Max Price Input -->
                 <div class="col-span-1">
-                  <label for="max-price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Max Price</label>
-                  <input v-model.number="searchQuery.max_price" id="max-price" type="number" min="0" placeholder="Max price"
+                  <label for="max-price" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Max
+                    Price</label>
+                  <input v-model.number="searchQuery.max_price" id="max-price" type="number" min="0"
+                         placeholder="Max price"
                          class="w-full py-3 px-4 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600
                       focus:ring-2 focus:ring-fuchsia-500 focus:outline-none transition-all duration-300">
                 </div>
 
-                <!-- Category Dropdown -->
                 <div class="col-span-1">
-                  <label for="category" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
+                  <label for="category"
+                         class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Category</label>
                   <select v-model="searchQuery.category_id" id="category"
                           class="w-full py-3 px-4 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600
                        focus:ring-2 focus:ring-fuchsia-500 focus:outline-none transition-all duration-300">
@@ -153,7 +164,6 @@
                 </div>
               </div>
 
-              <!-- Search Button -->
               <div class="flex justify-center mt-8">
                 <button type="submit"
                         class="w-full md:w-1/2 py-3 px-6 bg-fuchsia-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg
@@ -163,8 +173,6 @@
               </div>
             </form>
           </div>
-
-
 
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             <div v-for="(item, index) in products" :key="index"
@@ -193,11 +201,13 @@
                     }} in stock</span>
                   <span class="text-2xl font-bold text-primary-600 dark:text-primary-400">${{ item.price }}</span>
                 </div>
-
                 <button
                     @click="addToCart(item)"
-                    class="w-full py-3 bg-fuchsia-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg hover:bg-blue-600 transition-transform duration-200 transform hover:scale-105 ease-in-out">
-                  Add to Cart
+                    :disabled="item.stock === 0"
+                    class="w-full py-3 bg-fuchsia-700 text-white font-medium rounded-lg shadow-md hover:shadow-lg hover:bg-blue-600 transition-transform duration-200 transform hover:scale-105 ease-in-out"
+                    :class="{'opacity-50 cursor-not-allowed': item.stock === 0}"
+                >
+                  {{ item.stock === 0 ? 'Out of Stock' : 'Add to Cart' }}
                 </button>
               </div>
             </div>
@@ -404,39 +414,38 @@
 </template>
 
 <script setup>
-import {ref, onMounted} from 'vue';
-import {useRouter} from 'vue-router';
-import {useCookie} from '#app';
+import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+import { useCookie, useAsyncData } from '#app';
 import methodService from '~/plugins/methodService.ts';
-import cart from '@/assets/img_4.png'
-import order from '@/assets/img_1.png'
+import cart from '@/assets/img_4.png';
+import order from '@/assets/img_1.png';
+import { useToast } from 'vue-toastification';
 
+const toast = useToast();
 const products = ref([]);
 const pagination = ref({
   current_page: 1,
   last_page: 1,
   total: 0,
 });
-
 const isDropdownOpen = ref(false);
 const isLoggedIn = ref(false);
-const user = ref({name: '', avatar: ''});
+const user = ref({ name: '', avatar: '' });
 const isLoading = ref(false);
 const router = useRouter();
 const categories = ref([]);
-
 const token = useCookie('token').value;
 const userName = useCookie('name').value;
 const userAvatar = useCookie('userAvatar').value;
+const isFormVisible = ref(false);
 const searchQuery = ref({
   name: '',
   min_price: null,
   max_price: null,
-  category_id: null
+  category_id: '',
 });
-// definePageMeta({
-//   middleware:'auth'
-// })
+
 if (token) {
   isLoggedIn.value = true;
   user.value.name = userName || '';
@@ -445,95 +454,101 @@ if (token) {
   isLoggedIn.value = false;
 }
 
+const { data: productsData, pending: productsPending, refresh: refreshProducts } = useAsyncData('products', async () => {
+  const params = {
+    page: pagination.value.current_page,
+    name: searchQuery.value.name || '',
+    min_price: searchQuery.value.min_price || '',
+    max_price: searchQuery.value.max_price || '',
+    category_id: searchQuery.value.category_id || '',
+  };
+  const filteredParams = Object.fromEntries(Object.entries(params).filter(([_, v]) => v !== ''));
+  const queryString = new URLSearchParams(filteredParams).toString();
+  const response = await methodService().get(`/products?${queryString}`);
+
+  pagination.value = {
+    current_page: response.current_page,
+    last_page: response.last_page,
+    total: response.total,
+  };
+
+  return response.data;
+});
+
+watch(productsData, (newProducts) => {
+  if (newProducts) {
+    products.value = newProducts;
+  }
+});
+
+const { data: categoriesData, pending: categoriesPending } = useAsyncData('categories', async () => {
+  const response = await methodService().get(`/categories`);
+  return response.data;
+});
+
+watch(categoriesData, (newCategories) => {
+  if (newCategories) {
+    categories.value = newCategories;
+  }
+});
+
 const addToCart = (product) => {
-  const cart = JSON.parse(localStorage.getItem('cart')) || [];
-  const existingProduct = cart.find((item) => item.id === product.id);
+  if (process.client) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingProduct = cart.find((item) => item.id === product.id);
 
-  if (existingProduct) {
-    existingProduct.quantity += 1;
-  } else {
-    cart.push({...product, quantity: 1});
-  }
-  localStorage.setItem('cart', JSON.stringify(cart));
-  alert('Product added to cart!');
-};
-
-const fetchProducts = async (page) => {
-  if (isLoading.value) return;
-  isLoading.value = true;
-
-  try {
-    const params = new URLSearchParams();
-    params.append('page', page);
-    if (searchQuery.value.name) params.append('name', searchQuery.value.name);
-    if (searchQuery.value.min_price) params.append('min_price', searchQuery.value.min_price.toString());
-    if (searchQuery.value.max_price) params.append('max_price', searchQuery.value.max_price.toString());
-    if (searchQuery.value.category_id) params.append('category_id', searchQuery.value.category_id.toString());
-
-    const response = await methodService().get(`/products?${params.toString()}`);
-    products.value.push(...response.data);
-    pagination.value.current_page = response.current_page;
-    pagination.value.last_page = response.last_page;
-  } catch (error) {
-    console.error('Error fetching products:', error);
-  } finally {
-    isLoading.value = false;
-  }
-};
-const fetchCategories = async () => {
-  try {
-    const response = await methodService().get(`/categories`);
-    categories.value = response.data;
-  } catch (error) {
-    console.error('Error fetching categories:', error);
+    if (existingProduct) {
+      existingProduct.quantity += 1;
+    } else {
+      cart.push({ ...product, quantity: 1 });
+    }
+    localStorage.setItem('cart', JSON.stringify(cart));
+    toast.success('Product added to cart!');
   }
 };
 
 const searchProducts = () => {
   products.value = [];
-  fetchProducts(1);
+  refreshProducts();
 };
 
 const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
 };
-onMounted(() => {
-  setTimeout(() => {
-    isFormVisible.value = true;
-  }, 1000);
-});
 
-const handleScroll = () => {
-  const scrollTop = window.scrollY;
-  const windowHeight = window.innerHeight;
-  const documentHeight = document.documentElement.scrollHeight;
+setTimeout(() => {
+  isFormVisible.value = true;
+}, 1000);
 
-  if (scrollTop + windowHeight >= documentHeight - 100 && pagination.value.current_page < pagination.value.last_page) {
-    fetchProducts(pagination.value.current_page + 1);
-  }
-};
-onMounted(() => {
+if (process.client) {
+  const handleScroll = () => {
+    const scrollTop = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    if (scrollTop + windowHeight >= documentHeight - 100 && pagination.value.current_page < pagination.value.last_page) {
+      pagination.value.current_page += 1;
+      refreshProducts();
+    }
+  };
   window.addEventListener('scroll', handleScroll);
-  fetchProducts(pagination.value.current_page);
-  fetchCategories();
-});
-
-function logout() {
-  useCookie('token').value = null;
-  useCookie('name').value = null;
-  useCookie('userAvatar').value = null;
-  isLoggedIn.value = false;
-  isDropdownOpen.value = true;
-  router.push('/login');
 }
 
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
-});
-const isFormVisible = ref(false);
-
+const logout = async () => {
+  try {
+    await methodService().post('/logout');
+    useCookie('token').value = null;
+    useCookie('name').value = null;
+    useCookie('userAvatar').value = null;
+    isLoggedIn.value = false;
+    await router.push('/login');
+    toast.success('Logged out successfully!');
+  } catch (error) {
+    console.error('Error during logout:', error);
+    toast.error('Failed to log out');
+  }
+};
 </script>
-
 <style>
 @keyframes slideIn {
   from {
@@ -568,10 +583,6 @@ const isFormVisible = ref(false);
 
 .hover\:scale-110:hover {
   transform: scale(1.1);
-}
-
-.bg-primary-600 {
-  background-color: #3b82f6;
 }
 
 .relative {

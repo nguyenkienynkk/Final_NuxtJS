@@ -54,7 +54,9 @@
                     <a href="#" class="flex items-center aspect-square w-20 h-20 shrink-0">
                       <img class="h-20 w-20 dark:hidden" :src="item.preview_img_path" alt="Product image"/>
                     </a>
-                    <a href="#" class="hover:underline">Apple iMac 27”</a>
+                    <a href="#" class="hover:underline truncate" style="max-width: 200px; display: inline-block;">
+                      {{ item.name }}
+                    </a>
                   </div>
                 </td>
                 <td class="p-4 text-base font-normal text-gray-900 dark:text-white">x {{ item.quantity }}</td>
@@ -100,10 +102,10 @@
 
             <div class="gap-4 sm:flex sm:items-center">
               <button type="button"
+                      @click="navigateTo('/products')"
                       class="w-full rounded-lg  border border-gray-200 bg-white px-5  py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white dark:focus:ring-gray-700">
                 Return to Shopping
               </button>
-
               <button type="submit"
                       class="mt-4 flex w-full items-center justify-center rounded-lg bg-primary-700  px-5 py-2.5 text-sm font-medium text-white hover:bg-primary-800 focus:outline-none focus:ring-4 focus:ring-primary-300  dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 sm:mt-0">
                 Send the order
@@ -118,11 +120,13 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import methodService from "~/plugins/methodService.ts";
+import {useToast} from "vue-toastification";
 
 const cart = ref([]);
 const phone = ref('');
 const address = ref('');
 const router = useRouter()
+const toast = useToast()
 onMounted(() => {
   const storedCart = localStorage.getItem('cart');
   if (storedCart) {
@@ -148,12 +152,24 @@ const handleSubmit = async () => {
       name: item.name
     }))
   }
+  definePageMeta({
+    middleware: 'auth'
+  })
   try {
-    const response = await methodService().post('/order', dataSend)
-    await router.push("/order-success")
-    console.log('Order submitted successfully', response);
+    const response = await methodService().post('/order', dataSend);
+    await router.push("/order-success");
+    localStorage.removeItem('cart');
+    toast.success('Order submitted successfully');
   } catch (error) {
-    console.error('Error submitting order', error);
+    console.log('Error response:', error);
+
+    if (error && error.message) {
+      toast.error(error.message);
+    } else {
+      toast.error('Failed to submit order');
+    }
+    console.error(error);
   }
+
 }
 </script>

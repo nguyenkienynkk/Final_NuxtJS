@@ -46,9 +46,9 @@
                 Sign in
               </button>
               <p class="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet? <a href="/signup"
+                Don’t have an account yet? <span  @click="navigateTo('/signup')"
                                               class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign
-                up</a>
+                up</span>
               </p>
             </form>
           </div>
@@ -66,6 +66,11 @@ const password = ref('')
 const router = useRouter()
 const cookieToken = useCookie('token')
 const cookieName = useCookie('name')
+const cookieUser = useCookie('user')
+import { useToast } from 'vue-toastification';
+
+const toast = useToast();
+
 const login = async () => {
   try {
     const response = await methodService().post('/login', {
@@ -73,12 +78,13 @@ const login = async () => {
       password: password.value,
     })
     cookieToken.value = response.token
+    cookieUser.value = response.user
     cookieName.value = JSON.stringify(response.user.name)
-    alert("Login successful!");
+    toast.success("Login successful!");
     await router.push('/products');
   } catch (error) {
     console.error("Signup error:", error);
-    alert("There was an error with your signup.");
+    toast.error("There was an error with your signup.");
   }
 }
 </script>
